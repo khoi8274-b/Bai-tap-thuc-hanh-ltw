@@ -5,9 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trang giới thiệu cá nhân</title>
   <style>
+    /* Biến CSS cho Chế độ Sáng (mặc định) */
     :root {
       --primary: #4a90e2;
+      --bg-color: #f0f4f8;
+      --text-color: #2d3748;
       --card-bg: rgba(255, 255, 255, 0.88);
+      --single-card-bg: #ffffff;
+      --card-border: rgba(255, 255, 255, 0.7);
+      --badge-bg: #edf2f7;
+      --badge-text: #2d3748;
+      --nav-hover: rgba(74, 144, 226, 0.12);
+      --shadow-color: rgba(0, 0, 0, 0.06);
+    }
+
+    /* Biến CSS cho Chế độ Tối */
+    body.dark-mode {
+      --bg-color: #121824;
+      --text-color: #e2e8f0;
+      --card-bg: rgba(26, 32, 44, 0.85);
+      --single-card-bg: #212936;
+      --card-border: rgba(255, 255, 255, 0.08);
+      --badge-bg: #2d3748;
+      --badge-text: #e2e8f0;
+      --nav-hover: rgba(74, 144, 226, 0.25);
+      --shadow-color: rgba(0, 0, 0, 0.4);
     }
 
     body {
@@ -15,8 +37,9 @@
       margin: 0;
       padding: 30px 20px;
       line-height: 1.6;
-      background-color: #f0f4f8;
-      transition: background-color 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.5s ease, color 0.5s ease;
       overflow-x: hidden;
     }
 
@@ -47,19 +70,20 @@
     }
 
     nav a:hover {
-      background-color: rgba(74, 144, 226, 0.12);
+      background-color: var(--nav-hover);
       transform: translateY(-2px);
     }
 
-    /* Box chung & Box riêng */
+    /* Khối Box */
     .shared-box {
       background: var(--card-bg);
       backdrop-filter: blur(10px);
       border-radius: 16px;
       padding: 24px;
       margin-bottom: 25px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.7);
+      box-shadow: 0 10px 30px var(--shadow-color);
+      border: 1px solid var(--card-border);
+      transition: background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
     }
 
     .box-container {
@@ -70,62 +94,88 @@
     }
 
     .single-box {
-      background: #ffffff;
+      background: var(--single-card-bg);
       border-radius: 12px;
       padding: 18px;
       border-left: 4px solid var(--primary);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px var(--shadow-color);
+      transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.4s ease;
     }
 
     .single-box:hover {
       transform: translateY(-4px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
     }
 
     .time-badge {
       font-family: monospace;
       font-size: 1.1rem;
-      background: #edf2f7;
+      background: var(--badge-bg);
+      color: var(--badge-text);
       padding: 4px 10px;
       border-radius: 6px;
       display: inline-block;
       margin-top: 5px;
-      color: #2d3748;
+      transition: background 0.4s ease, color 0.4s ease;
     }
 
-    /* Nút bấm hiệu ứng */
+    /* Nhóm nút đổi màu */
     .button-wrapper {
-      text-align: center;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 14px;
       margin: 35px 0;
       position: relative;
     }
 
-    .magic-button {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: #ffffff;
+    .btn-action {
       border: none;
-      padding: 14px 32px;
-      font-size: 15px;
+      padding: 12px 24px;
+      font-size: 14px;
       font-weight: 600;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
       transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
       position: relative;
       z-index: 10;
     }
 
-    .magic-button:hover {
+    .btn-action:hover {
       transform: translateY(-2px) scale(1.03);
-      box-shadow: 0 8px 25px rgba(118, 75, 162, 0.45);
     }
 
-    .magic-button:active {
+    .btn-action:active {
       transform: scale(0.95);
     }
 
-    /* Canvas pháo nổ party */
+    /* Nút đa sắc party */
+    .btn-party {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #ffffff;
+      box-shadow: 0 4px 15px rgba(118, 75, 162, 0.3);
+    }
+    .btn-party:hover {
+      box-shadow: 0 8px 25px rgba(118, 75, 162, 0.45);
+    }
+
+    /* Nút sáng */
+    .btn-light {
+      background: #ffffff;
+      color: #2d3748;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e2e8f0;
+    }
+
+    /* Nút tối */
+    .btn-dark {
+      background: #1e293b;
+      color: #f8fafc;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      border: 1px solid #334155;
+    }
+
+    /* Canvas pháo nổ */
     #confetti-canvas {
       position: fixed;
       top: 0;
@@ -137,10 +187,7 @@
     }
 
     footer {
-      text-align: center;
-      margin-top: 50px;
-      font-size: 14px;
-      color: #718096;
+      padding: 20px 0;
     }
 
     /* Mèo 4 chân SVG */
@@ -172,10 +219,8 @@
 </head>
 <body id="myBody">
 
-  <!-- Canvas hiển thị hiệu ứng nổ pháo hoa giấy -->
   <canvas id="confetti-canvas"></canvas>
 
-  <!-- Chú Mèo 4 Chân -->
   <div id="cat-wrapper">
     <svg viewBox="0 0 50 35" width="46" height="32">
       <path class="cat-tail" d="M 12 18 Q 4 12 6 5" stroke="#e06c28" stroke-width="3" fill="none" stroke-linecap="round" style="transform-origin: 12px 18px;"/>
@@ -192,7 +237,7 @@
   </div>
 
   <header>
-    <h1>Hồ Sơ Cá Nhân</h1>
+    <h1>Trang Cá Nhân</h1>
   </header>
 
   <nav>
@@ -201,44 +246,41 @@
   </nav>
 
   <main>
-    <!-- BOX CHUNG: Lời chào và Đồng hồ -->
     <section class="shared-box">
       <h2 id="greetingText" style="margin-top: 0;">Đang tải lời chào...</h2>
       <p style="margin-bottom: 0;">Thời gian hệ thống hiện tại: <span id="clockText" class="time-badge">00 : 00 : 00</span></p>
     </section>
 
-    <!-- BOX CHUNG CHỨA CÁC BOX RIÊNG: Thông tin sinh viên & Sở thích -->
     <section class="shared-box" id="info">
       <h3 style="margin-top: 0;">Thông Tin Chi Tiết</h3>
       <div class="box-container">
         
-        <!-- Box riêng 1: Thông tin sinh viên -->
         <article class="single-box">
-          <h4 style="margin-top: 0; color: #333;">Sinh viên</h4>
+          <h4 style="margin-top: 0;">Sinh viên</h4>
           <p style="margin: 4px 0;"><strong>Họ tên:</strong> Đăng Khôi</p>
           <p style="margin: 4px 0;"><strong>MSV:</strong> B25DCTV043</p>
         </article>
 
-        <!-- Box riêng 2: Sở thích -->
         <article class="single-box" id="about">
-          <h4 style="margin-top: 0; color: #333;">Sở thích</h4>
+          <h4 style="margin-top: 0;">Sở thích</h4>
           <p style="margin: 4px 0;">Thiết kế giao diện web tương tác, lập trình Frontend và khám phá công nghệ.</p>
         </article>
 
       </div>
     </section>
 
+    <!-- Nút bấm chọn tông màu -->
     <div class="button-wrapper">
-      <button class="magic-button" id="btnChangeColor">Đổi Màu Nền Tự Động 🎉</button>
+      <button class="btn-action btn-light" id="btnLight">☀️ Chế độ Sáng</button>
+      <button class="btn-action btn-dark" id="btnDark">🌙 Chế độ Tối</button>
+      <button class="btn-action btn-party" id="btnParty">🎉 Đổi Màu Ngẫu Nhiên</button>
     </div>
   </main>
 
-  <footer>
-    <p>&copy; 2026 Đăng Khôi - B25DCTV043. Tất cả quyền được bảo lưu.</p>
-  </footer>
+  <footer></footer>
 
   <script>
-    // --- 1. ĐỒNG HỒ VÀ LỜI CHÀO ---
+    // --- 1. ĐỒNG HỒ & LỜI CHÀO ---
     const greetingElement = document.getElementById("greetingText");
     const clockElement = document.getElementById("clockText");
 
@@ -264,7 +306,7 @@
     setInterval(updateClockAndGreeting, 1000);
 
 
-    // --- 2. HIỆU ỨNG PHÁO NỔ PARTY (CONFETTI EXPLOSION) ---
+    // --- 2. HIỆU ỨNG PHÁO NỔ PARTY (CONFETTI) ---
     const canvas = document.getElementById("confetti-canvas");
     const ctx = canvas.getContext("2d");
     let particles = [];
@@ -281,11 +323,10 @@
         this.x = x;
         this.y = y;
         this.size = Math.random() * 8 + 4;
-        // Bắn toả ra mọi hướng dạng pháo hoa
         const angle = Math.random() * Math.PI * 2;
         const speed = Math.random() * 12 + 5;
         this.vx = Math.cos(angle) * speed;
-        this.vy = Math.sin(angle) * speed - 3; // lực đẩy lên
+        this.vy = Math.sin(angle) * speed - 3;
         this.gravity = 0.35;
         this.friction = 0.95;
         this.opacity = 1;
@@ -337,25 +378,42 @@
     renderConfetti();
 
 
-    // --- 3. ĐỔI MÀU NỀN & BẮN PHÁO KHI BẤM NÚT ---
-    const changeColorBtn = document.getElementById("btnChangeColor");
+    // --- 3. ĐỔI MÀU NỀN (SÁNG / TỐI / NGẪU NHIÊN) KÈM NỔ PHÁO ---
     const bodyElement = document.getElementById("myBody");
-    const colorPalettes = ["#fdfbf7", "#eef7ee", "#f0f4f8", "#fff5eb", "#f3e8ff", "#e0f2fe", "#fdf2f8"];
+    const btnLight = document.getElementById("btnLight");
+    const btnDark = document.getElementById("btnDark");
+    const btnParty = document.getElementById("btnParty");
 
-    changeColorBtn.addEventListener("click", (e) => {
-      // Đổi màu nền ngẫu nhiên
-      const randomColor = colorPalettes[Math.floor(Math.random() * colorPalettes.length)];
-      bodyElement.style.backgroundColor = randomColor;
+    const partyColors = ["#fdfbf7", "#eef7ee", "#fff5eb", "#f3e8ff", "#e0f2fe", "#fdf2f8"];
 
-      // Kích hoạt bắn pháo party ngay tại tâm của nút bấm
-      const rect = changeColorBtn.getBoundingClientRect();
+    function explodeFromButton(btn) {
+      const rect = btn.getBoundingClientRect();
       const originX = rect.left + rect.width / 2;
       const originY = rect.top + rect.height / 2;
       triggerPartyExplosion(originX, originY);
+    }
+
+    btnLight.addEventListener("click", () => {
+      bodyElement.classList.remove("dark-mode");
+      bodyElement.style.backgroundColor = "";
+      explodeFromButton(btnLight);
+    });
+
+    btnDark.addEventListener("click", () => {
+      bodyElement.classList.add("dark-mode");
+      bodyElement.style.backgroundColor = "";
+      explodeFromButton(btnDark);
+    });
+
+    btnParty.addEventListener("click", () => {
+      bodyElement.classList.remove("dark-mode");
+      const randomColor = partyColors[Math.floor(Math.random() * partyColors.length)];
+      bodyElement.style.backgroundColor = randomColor;
+      explodeFromButton(btnParty);
     });
 
 
-    // --- 4. MÈO 4 CHÂN CHẠY THEO CHUỘT MƯỢT MÀ ---
+    // --- 4. MÈO 4 CHÂN CHẠY THEO CHUỘT ---
     const cat = document.getElementById("cat-wrapper");
     let mouseX = window.innerWidth / 2;
     let mouseY = window.innerHeight / 2;

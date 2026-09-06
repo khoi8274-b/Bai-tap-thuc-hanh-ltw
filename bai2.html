@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy tính đơn giản</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f4f4f9;
+            font-family: Arial, sans-serif;
+            margin: 0;
+        }
+
+        .calculator {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+            width: 280px;
+        }
+
+        #display {
+            width: 100%;
+            height: 50px;
+            background-color: #222;
+            color: #00ff66;
+            font-size: 24px;
+            text-align: right;
+            line-height: 50px;
+            padding-right: 12px;
+            box-sizing: border-box;
+            border-radius: 6px;
+            margin-bottom: 16px;
+            overflow-x: auto;
+        }
+
+        .buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+        }
+
+        button {
+            padding: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 6px;
+            background-color: #e0e0e0;
+            cursor: pointer;
+            transition: 0.1s ease;
+        }
+
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .operator {
+            background-color: #ff9f0a;
+            color: white;
+        }
+
+        .clear {
+            background-color: #ff3b30;
+            color: white;
+            grid-column: span 2;
+        }
+
+        .equals {
+            background-color: #34c759;
+            color: white;
+            grid-column: span 2;
+        }
+    </style>
+</head>
+<body>
+
+<div class="calculator">
+    <div id="display">0</div>
+    <div class="buttons">
+        <button class="clear" data-action="clear">Clear</button>
+        <button class="operator" data-action="operator">/</button>
+        <button class="operator" data-action="operator">*</button>
+
+        <button data-action="number">7</button>
+        <button data-action="number">8</button>
+        <button data-action="number">9</button>
+        <button class="operator" data-action="operator">-</button>
+
+        <button data-action="number">4</button>
+        <button data-action="number">5</button>
+        <button data-action="number">6</button>
+        <button class="operator" data-action="operator">+</button>
+
+        <button data-action="number">1</button>
+        <button data-action="number">2</button>
+        <button data-action="number">3</button>
+        <button data-action="number">0</button>
+
+        <button class="equals" data-action="equals">=</button>
+    </div>
+</div>
+
+<script>
+    const display = document.getElementById('display');
+    const buttons = document.querySelectorAll('button');
+
+    // Lắng nghe sự kiện click trên từng nút bằng addEventListener
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            const action = button.dataset.action;
+            const value = button.innerText;
+
+            if (action === 'clear') {
+                // Đặt lại màn hình về 0
+                display.innerText = '0';
+            } 
+            else if (action === 'number') {
+                // Nối số vào màn hình bằng .innerText
+                if (display.innerText === '0' || display.innerText === 'Error') {
+                    display.innerText = value;
+                } else {
+                    display.innerText += value;
+                }
+            } 
+            else if (action === 'operator') {
+                const currentText = display.innerText;
+                const lastChar = currentText.slice(-1);
+                const operators = ['+', '-', '*', '/'];
+
+                if (currentText === 'Error') return;
+
+                // Kiểm tra điều kiện: tránh nhập liên tiếp 2 toán tử
+                if (operators.includes(lastChar)) {
+                    display.innerText = currentText.slice(0, -1) + value;
+                } else {
+                    display.innerText += value;
+                }
+            } 
+            else if (action === 'equals') {
+                const expression = display.innerText;
+                const operators = ['+', '-', '*', '/'];
+
+                // Kiểm tra điều kiện trước khi tính toán
+                if (expression === 'Error' || operators.includes(expression.slice(-1))) {
+                    return;
+                }
+
+                try {
+                    // Sử dụng Function constructor để tính toán biểu thức an toàn hơn eval()
+                    const result = new Function(`return ${expression}`)();
+                    
+                    if (!isFinite(result)) {
+                        display.innerText = 'Error';
+                    } else {
+                        display.innerText = result.toString();
+                    }
+                } catch {
+                    display.innerText = 'Error';
+                }
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
